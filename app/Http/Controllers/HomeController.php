@@ -153,7 +153,6 @@ class HomeController extends Controller
                     $dados .= "<li>BLOB: ". $arquivo ."</li>";
                 $dados .= "</ul>";
                 return $dados;
-                
                 */
             }
         }
