@@ -86,9 +86,9 @@
                 <span data-boletim="quantidade-visualizacoes-{{ $ultimo_boletim->id }}">
                     {{ $ultimo_boletim->numero_visualizacoes }}
                 @if($ultimo_boletim->numero_visualizacoes != 1)
-                    vizualizações
+                    visualizações
                 @else
-                    vizualização
+                    visualização
                 @endif
                 </span>
             </li>
@@ -146,14 +146,14 @@
 
 <script type="text/javascript">
     $(".doc_boletim").click(function(){
-        atribuirVizualizacao($(this), 1);
+        atribuirVisualizacao($(this), 1);
     });
 
     $(".doc_boletim_small").click(function(){
-        atribuirVizualizacao($(this), 2);
+        atribuirVisualizacao($(this), 2);
     });
 
-    function atribuirVizualizacao(obj, tipo){
+    function atribuirVisualizacao(obj, tipo){
         $("#carregamento").css('display', 'block');
         id = $(obj).attr('id').substr(7);
         $.get('/api/boletim/atrvis/' + id, function(retorno){
@@ -163,9 +163,9 @@
                 if(tipo == 1){
                     var viz = "";
                     if(qtd == 1)
-                        viz = " vizualização";
+                        viz = " visualização";
                     else
-                        viz = " vizualizações";
+                        viz = " visualizações";
                     $("[data-boletim = 'quantidade-visualizacoes-"+id+"']").text(qtd + viz);
                 }else if(tipo = 2){
                     $("[data-boletim = 'quantidade-visualizacoes-"+id+"']").text(qtd);

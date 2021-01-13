@@ -92,9 +92,9 @@
             <li class="list-group-item info-item"><strong>Quantidade de visualizações:</strong>
                 <span data-boletim="quantidade-visualizacoes-{{ $destaque->numero_visualizacoes }}">{{ $destaque->numero_visualizacoes }}
                 @if($destaque->numero_visualizacoes != 1)    
-                    vizualizações
+                    visualizações
                 @else
-                    vizualização
+                    visualização
                 @endif
                 </span>
             </li>
@@ -192,9 +192,9 @@
                         default:
                             var viz = "";
                             if(dados.numero_visualizacoes != 1)
-                                viz = " vizualizações";
+                                viz = " visualizações";
                             else
-                                viz = " vizualização";
+                                viz = " visualização";
                                 $(this).attr('data-boletim', "quantidade-visualizacoes-"+dados.id);
                                 $(this).text(dados.numero_visualizacoes + viz);
                     }
@@ -212,14 +212,14 @@
     }
 
     $(".doc_boletim").click(function(){
-        atribuirVizualizacao($(this), 1);
+        atribuirVisualizacao($(this), 1);
     });
 
     $(".doc_boletim_small").click(function(){
-        atribuirVizualizacao($(this), 2);
+        atribuirVisualizacao($(this), 2);
     });
 
-    function atribuirVizualizacao(obj, tipo){
+    function atribuirVisualizacao(obj, tipo){
         $("#carregamento").css('display', 'block');
         id = $(obj).attr('id').substr(7);
         $.get('/api/boletim/atrvis/' + id, function(retorno){
@@ -229,9 +229,9 @@
                 if(tipo == 1){
                     var viz = "";
                     if(qtd == 1)
-                        viz = " vizualização";
+                        viz = " visualização";
                     else
-                        viz = " vizualizações";
+                        viz = " visualizações";
                     $("[data-boletim = 'quantidade-visualizacoes-"+id+"']").text(qtd + viz);
                 }else if(tipo = 2){
                     $("[data-boletim = 'quantidade-visualizacoes-"+id+"']").text(qtd);
