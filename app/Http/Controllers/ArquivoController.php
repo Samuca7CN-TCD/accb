@@ -16,12 +16,10 @@ class ArquivoController extends Controller
     public function index()
     {
 
-        $ultimo_boletim_anos_anteriores = Boletim::where('ano', '<', date('Y'))
-                                                ->orderBy('mes_id', 'desc')
-                                                ->first();
+        $destaque = Boletim::orderBy('ano', 'desc')->orderBy('mes_id', 'desc')->limit(10)->get()->last();
 
-        $meses_boletins_ultimo_ano = Boletim::select('mes_id')
-                                        ->where('ano', $ultimo_boletim_anos_anteriores['ano'])
+        $meses_destaque = Boletim::select('mes_id')
+                                        ->where('ano', $destaque['ano'])
                                         ->groupBy('mes_id')
                                         ->orderBy('mes_id', 'desc')
                                         ->get();
@@ -31,7 +29,7 @@ class ArquivoController extends Controller
                                         ->orderBy('ano', 'desc')
                                         ->get();
 
-        return view('arquivo', compact(['ultimo_boletim_anos_anteriores', 'meses_boletins_ultimo_ano', 'anos_boletins']));
+        return view('arquivo', compact(['destaque', 'meses_destaque', 'anos_boletins']));
     }
 
     /**

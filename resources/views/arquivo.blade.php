@@ -46,7 +46,7 @@
                 <label for="arquivo-ano">Selecione o ano do boletim desejado</label>
                 <select id="arquivo-ano" class="custom-select data-boletim">
                 @foreach($anos_boletins as $boletim)    
-                    @if($boletim->ano == $ultimo_boletim_anos_anteriores->ano)
+                    @if($boletim->ano == $destaque->ano)
                     <option value="{{ $boletim->ano }}" selected="selected" >{{ $boletim->ano }}</option>
                     @else
                     <option value="{{ $boletim->ano }}">{{ $boletim->ano }}</option>
@@ -61,8 +61,8 @@
             <div class="form-group mx-auto m-5">
                 <label for="arquivo-mes">Selecione o mês do boletim desejado</label>
                 <select id="arquivo-mes" class="custom-select data-boletim">
-                @foreach($meses_boletins_ultimo_ano as $mes)
-                    @if($mes->mes->numeracao == $ultimo_boletim_anos_anteriores->mes->numeracao)
+                @foreach($meses_destaque as $mes)
+                    @if($mes->mes->numeracao == $destaque->mes->numeracao)
                     <option value="{{ $mes->mes->numeracao }}" selected="selected">{{ ucfirst( $mes->mes->nome ) }}</option>
                     @else
                     <option value="{{ $mes->mes->numeracao }}">{{ ucfirst( $mes->mes->nome ) }}</option>
@@ -76,23 +76,31 @@
 
 
 <div class="row m-5 boletins_anteriores">
-    @if(!$ultimo_boletim_anos_anteriores)
+    @if(!$destaque)
     <div class="alert alert-info" role="alert">
         Não há boletins dos anos anteriores cadastrados
     </div>
     @else
     <div class="col-sm-12 col-md-6 boletim_area">
-        <p id="boletim_title" data-boletim="titulo">{{ ucfirst( $ultimo_boletim_anos_anteriores->mes->nome ) }} / {{ strval($ultimo_boletim_anos_anteriores->ano) }}</p>
+        <p id="boletim_title" data-boletim="titulo">{{ ucfirst( $destaque->mes->nome ) }} / {{ strval($destaque->ano) }}</p>
     </div>
     <div class="col-sm-12 col-md-6">
         <ul class="list-group detalhes_boletim">
-            <li class="list-group-item info-item"><strong><span data-boletim="subtitulo">Boletim do mês de {{ ucfirst( $ultimo_boletim_anos_anteriores->mes->nome ) }} / {{ strval($ultimo_boletim_anos_anteriores->ano) }}</span></strong></li>
-            <li class="list-group-item info-item"><strong>Data de publicação:</strong> <span data-boletim="data-publicacao">{{ date('d/m/Y \à\s H:i', strtotime($ultimo_boletim_anos_anteriores->updated_at)) }}</span></li>
-            <li class="list-group-item info-item"><strong>Número de páginas:</strong> <span data-boletim="numero-paginas">{{ $ultimo_boletim_anos_anteriores->numero_paginas }} páginas</span></li>
-            <li class="list-group-item info-item"><strong>Quantidade de visualizações:</strong> <span data-boletim="quantidade-visualizacoes">{{ $ultimo_boletim_anos_anteriores->numero_visualizacoes }} visualizações</span></li>
+            <li class="list-group-item info-item"><strong><span data-boletim="subtitulo">Boletim do mês de {{ ucfirst( $destaque->mes->nome ) }} / {{ strval($destaque->ano) }}</span></strong></li>
+            <li class="list-group-item info-item"><strong>Data de publicação:</strong> <span data-boletim="data-publicacao">{{ date('d/m/Y \à\s H:i', strtotime($destaque->updated_at)) }}</span></li>
+            <li class="list-group-item info-item"><strong>Número de páginas:</strong> <span data-boletim="numero-paginas">{{ $destaque->numero_paginas }} páginas</span></li>
+            <li class="list-group-item info-item"><strong>Quantidade de visualizações:</strong>
+                <span data-boletim="quantidade-visualizacoes-{{ $destaque->numero_visualizacoes }}">{{ $destaque->numero_visualizacoes }}
+                @if($destaque->numero_visualizacoes != 1)    
+                    vizualizações
+                @else
+                    vizualização
+                @endif
+                </span>
+            </li>
             <li class="list-group-item a-item">
-                <a id="linkAnt{{ $ultimo_boletim_anos_anteriores->id }}" href="/{{ $ultimo_boletim_anos_anteriores->id }}" target="_blank" class="btn btn-outline-info doc_boletim">Ver boletim</a>
-                <a id="linkAnt{{ $ultimo_boletim_anos_anteriores->id }}" href="/{{ $ultimo_boletim_anos_anteriores->id }}" target="_blank" class="btn btn-outline-secondary doc_boletim" download="Boletim ACCB {{ ucfirst( $ultimo_boletim_anos_anteriores->mes->nome ) }} de {{ strval($ultimo_boletim_anos_anteriores->ano) }}">Baixar boletim</a>
+                <a id="linkAnt{{ $destaque->id }}" href="/{{ $destaque->id }}" target="_blank" class="btn btn-outline-info doc_boletim">Ver boletim</a>
+                <a id="linkAnt{{ $destaque->id }}" href="/{{ $destaque->id }}" target="_blank" class="btn btn-outline-secondary doc_boletim" download="Boletim ACCB {{ ucfirst( $destaque->mes->nome ) }} de {{ strval($destaque->ano) }}">Baixar boletim</a>
                 <span id="carregamento">
                     <div class="text-center">
                         <div class="spinner-border" role="status">
@@ -181,11 +189,17 @@
                         case 'numero-paginas':
                             $(this).text(dados.numero_paginas + " páginas");
                         break;
-                        case 'quantidade-visualizacoes':
-                            $(this).text(dados.numero_visualizacoes + " visualizações");
-                        break;
+                        default:
+                            var viz = "";
+                            if(dados.numero_visualizacoes != 1)
+                                viz = " vizualizações";
+                            else
+                                viz = " vizualização";
+                                $(this).attr('data-boletim', "quantidade-visualizacoes-"+dados.id);
+                                $(this).text(dados.numero_visualizacoes + viz);
                     }
-                    $(".doc_boletim").attr("href", "/" + dados.id)
+                    $(".doc_boletim").attr("id", "linkAnt"+dados.id);
+                    $(".doc_boletim").attr("href", "/" + dados.id);
                 });
             }else{
                 $(".detalhes_boletim span").each(function(){
@@ -198,21 +212,37 @@
     }
 
     $(".doc_boletim").click(function(){
+        atribuirVizualizacao($(this), 1);
+    });
+
+    $(".doc_boletim_small").click(function(){
+        atribuirVizualizacao($(this), 2);
+    });
+
+    function atribuirVizualizacao(obj, tipo){
         $("#carregamento").css('display', 'block');
-        id = $(this).attr('id').substr(7);
+        id = $(obj).attr('id').substr(7);
         $.get('/api/boletim/atrvis/' + id, function(retorno){
             if(retorno){
-                qtd = $("[data-boletim = 'quantidade-visualizacoes']").text();
-                qtd = qtd.split(' ');
-                qtd = qtd[0];
+                qtd = parseInt($("[data-boletim = 'quantidade-visualizacoes-"+id+"']").text());
                 qtd++;
-                $("[data-boletim = 'quantidade-visualizacoes']").text(qtd + " visualizações");
+                if(tipo == 1){
+                    var viz = "";
+                    if(qtd == 1)
+                        viz = " vizualização";
+                    else
+                        viz = " vizualizações";
+                    $("[data-boletim = 'quantidade-visualizacoes-"+id+"']").text(qtd + viz);
+                }else if(tipo = 2){
+                    $("[data-boletim = 'quantidade-visualizacoes-"+id+"']").text(qtd);
+                }
             }else{
-                $("[data-boletim = 'quantidade-visualizacoes']").text("Visualizações NÃO estão sendo auto incrementadas! Por favor, chamar técnico");
+                $("[data-boletim = 'quantidade-visualizacoes-"+id+"']").text("Visualizações NÃO estão sendo auto incrementadas! Por favor, chamar técnico");
             }
             $("#carregamento").css('display', 'none');
         });
-    });
+    }
+
 
 </script>
 

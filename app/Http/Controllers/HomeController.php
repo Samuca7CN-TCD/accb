@@ -15,11 +15,9 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $mes_atual = date('m');
-        $ano_atual = date('Y');
-        $boletins_ano_atual = Boletim::where('ano', $ano_atual)->where('mes_id', '<', $mes_atual)->orderBy('mes_id','desc')->get();
-        $boletim_mes_atual = $boletins_ano_atual->first();
-        return view('index', compact(['boletim_mes_atual', 'boletins_ano_atual']));
+        $ultimos_boletins = Boletim::orderBy('ano', 'desc')->orderBy('mes_id', 'desc')->limit(9)->get();
+        $ultimo_boletim = $ultimos_boletins->first();
+        return view('index', compact(['ultimos_boletins', 'ultimo_boletim']));
     }
 
     /**
