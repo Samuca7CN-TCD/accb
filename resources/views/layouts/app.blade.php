@@ -68,7 +68,7 @@
                 <div class="col-12 gradiente">
                     <div id="header_titulos" class="titulos">
                         <div>
-                            <h1 class="text-light">Boletins do projeto Cesta Básica</h1>
+                            <h1 class="text-light">Boletim ACCB/UESC</h1>
                             <h2 class="text-light">Departamento de Ciências Econômicas - UESC</h2>
                         </div>
                     </div>
