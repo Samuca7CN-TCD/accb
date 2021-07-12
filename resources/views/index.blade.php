@@ -79,7 +79,7 @@
     </div>
     <div class="col-sm-12 col-md-6">
         <ul class="list-group detalhes_boletim">
-            <li class="list-group-item info-item"><strong><span data-boletim="subtitulo">Boletim do mês de {{ ucfirst( $ultimo_boletim->mes->nome ) }} / {{ strval($ultimo_boletim->ano) }}</span></strong></li>
+            <li class="list-group-item info-item"><strong><span data-boletim="subtitulo">Boletim ACCB/UESC, ano {{ strval($ultimo_boletim->ano) - 2003 }}, n. {{$ultimo_boletim->mes->numeracao}}, {{ $ultimo_boletim->mes->nome }} {{ strval($ultimo_boletim->ano) }}</span></strong></li>
             <li class="list-group-item info-item"><strong>Data de publicação:</strong> <span data-boletim="data-publicacao">{{ date('d/m/Y \à\s H:i', strtotime($ultimo_boletim->updated_at)) }}</span></li>
             <li class="list-group-item info-item"><strong>Número de páginas:</strong> <span data-boletim="numero-paginas">{{ $ultimo_boletim->numero_paginas }} páginas</span></li>
             <li class="list-group-item info-item"><strong>Quantidade de visualizações:</strong>
