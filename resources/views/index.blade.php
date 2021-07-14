@@ -124,8 +124,8 @@
         <div class="col-sm-12 col-md-4 col-lg-3 m-0 boletim-item">
             <div class="card mx-auto">
                 <div class="card-body">
-                    <h5 class="card-title">{{ ucfirst( $boletim->mes->nome ) }} / {{ ucfirst( $boletim->ano ) }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted"></h6>
+                    <h5 class="card-title">{{ ucfirst($boletim->mes->nome) }} {{ strval($boletim->ano) }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Boletim ACCB/UESC, ano {{ strval($boletim->ano) - 2003 }}, n. {{$boletim->mes->numeracao}}</h6>
                     <p class="card-text">
                         Informações básicas:<br />
                         <strong>Número de páginas:</strong> <span>{{ $boletim->numero_paginas }}</span> <br />

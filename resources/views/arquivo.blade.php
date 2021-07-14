@@ -85,8 +85,8 @@
         <p id="boletim_title" data-boletim="titulo">{{ ucfirst( $destaque->mes->nome ) }} / {{ strval($destaque->ano) }}</p>
     </div>
     <div class="col-sm-12 col-md-6">
-        <ul class="list-group detalhes_boletim">
-            <li class="list-group-item info-item"><strong><span data-boletim="subtitulo">Boletim do mês de {{ ucfirst( $destaque->mes->nome ) }} / {{ strval($destaque->ano) }}</span></strong></li>
+        <ul class="list-group detalhes_boletim">            
+            <li class="list-group-item info-item"><strong><span data-boletim="subtitulo">Boletim ACCB/UESC, ano {{ strval($destaque->ano) - 2003 }}, n. {{$destaque->mes->numeracao}}, {{ $destaque->mes->nome }} {{ strval($destaque->ano) }}</span></strong></li>
             <li class="list-group-item info-item"><strong>Data de publicação:</strong> <span data-boletim="data-publicacao">{{ date('d/m/Y \à\s H:i', strtotime($destaque->updated_at)) }}</span></li>
             <li class="list-group-item info-item"><strong>Número de páginas:</strong> <span data-boletim="numero-paginas">{{ $destaque->numero_paginas }} páginas</span></li>
             <li class="list-group-item info-item"><strong>Quantidade de visualizações:</strong>
@@ -175,7 +175,8 @@
                     $("#boletim_title").text(meses[dados.mes_id - 1] + " / " + dados.ano);
                     switch(data){
                         case 'subtitulo':
-                            $(this).text("Boletim do mês de "+ meses[dados.mes_id - 1] + " / " + dados.ano);
+                            anoSeq = dados.ano-2003;
+                            $(this).text("Boletim ACCB/UESC, ano "+ anoSeq + ", n. " + dados.mes_id + ", " + meses[dados.mes_id - 1].toLowerCase() + " " + dados.ano);
                         break;
                         case 'data-publicacao':
                             dataA = dados.created_at.split('T');
