@@ -69,7 +69,7 @@
                     <div id="header_titulos" class="titulos">
                         <div>
                             <h1 class="text-light">Boletim ACCB/UESC</h1>
-                            <h2 class="text-light">Departamento de Ciências Econômicas - UESC</h2>
+                            <h2 class="text-light">ISSN 2763-8936</h2>
                         </div>
                     </div>
                 </div>
