@@ -112,4 +112,21 @@ class ArquivoController extends Controller
         $boletim = Boletim::select('id', 'mes_id', 'ano', 'numero_paginas', 'numero_visualizacoes', 'created_at')->where('ano', $ano)->where('mes_id', $mes)->get();
         return json_encode($boletim);
     }
+
+    //public function porano($ano=0)
+    public function porano(Request $request, $ano=0)
+    {     
+        $anos_boletins = Boletim::select('ano')
+                                        ->groupBy('ano')
+                                        ->orderBy('ano', 'desc')
+                                        ->get();
+        
+        if ($request->ano)
+          $ano = $request->ano;                                  
+        else if ($ano==0) $ano = $anos_boletins->skip(1)->first()->ano;   
+        
+        $boletins = Boletim::select('id', 'mes_id', 'ano', 'numero_paginas', 'numero_visualizacoes', 'especial', 'created_at')->where('ano', $ano)->orderBy('id', 'desc')->get();
+
+        return view('arquivoano', compact(['ano', 'anos_boletins', 'boletins']));
+    }    
 }

@@ -79,7 +79,11 @@
     </div>
     <div class="col-sm-12 col-md-6">
         <ul class="list-group detalhes_boletim">
-            <li class="list-group-item info-item"><strong><span data-boletim="subtitulo">Boletim ACCB/UESC, ano {{ strval($ultimo_boletim->ano) - 2003 }}, n. {{$ultimo_boletim->mes->numeracao}}, {{ $ultimo_boletim->mes->nome }} {{ strval($ultimo_boletim->ano) }}</span></strong></li>
+            @if($ultimo_boletim->especial == NULL)
+                <li class="list-group-item info-item"><strong><span data-boletim="subtitulo">Boletim ACCB/UESC, ano {{ strval($ultimo_boletim->ano) - 2003 }}, n. {{$ultimo_boletim->mes->numeracao}}, {{ $ultimo_boletim->mes->nome }} {{ strval($ultimo_boletim->ano) }}</span></strong></li>
+            @else
+                <li class="list-group-item info-item"><strong><span data-boletim="subtitulo">Boletim ACCB/UESC, {{$ultimo_boletim->especial}}, {{ $ultimo_boletim->mes->nome }} {{ strval($ultimo_boletim->ano) }}</span></strong></li>
+            @endif    
             <li class="list-group-item info-item"><strong>Data de publicação:</strong> <span data-boletim="data-publicacao">{{ date('d/m/Y \à\s H:i', strtotime($ultimo_boletim->updated_at)) }}</span></li>
             <li class="list-group-item info-item"><strong>Número de páginas:</strong> <span data-boletim="numero-paginas">{{ $ultimo_boletim->numero_paginas }} páginas</span></li>
             <li class="list-group-item info-item"><strong>Quantidade de visualizações:</strong>
@@ -118,14 +122,19 @@
         <h3>Publicações anteriores</h3>
     </div>
     @foreach($ultimos_boletins as $boletim)
-        @if($boletim->mes->id == $ultimo_boletim->mes->id && $boletim->ano == $ultimo_boletim->ano)
+        {{--@if($boletim->mes->id == $ultimo_boletim->mes->id && $boletim->ano == $ultimo_boletim->ano)--}}
+        @if($boletim->id == $ultimo_boletim->id)
             @continue
         @else
-        <div class="col-sm-12 col-md-4 col-lg-3 m-0 boletim-item">
+        <div class="col-sm-12 col-md-4 col-lg-3 m-3 boletim-item">
             <div class="card mx-auto">
                 <div class="card-body">
                     <h5 class="card-title">{{ ucfirst($boletim->mes->nome) }} {{ strval($boletim->ano) }}</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Boletim ACCB/UESC, ano {{ strval($boletim->ano) - 2003 }}, n. {{$boletim->mes->numeracao}}</h6>
+                    @if($boletim->especial == NULL)
+                        <h6 class="card-subtitle mb-2 text-muted">Boletim ACCB/UESC, ano {{ strval($boletim->ano) - 2003 }}, n. {{$boletim->mes->numeracao}}</h6>
+                    @else
+                        <h6 class="card-subtitle mb-2 text-muted">{{$boletim->especial}}</h6>
+                    @endif    
                     <p class="card-text">
                         Informações básicas:<br />
                         <strong>Número de páginas:</strong> <span>{{ $boletim->numero_paginas }}</span> <br />

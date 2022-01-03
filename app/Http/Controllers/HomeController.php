@@ -15,7 +15,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $ultimos_boletins = Boletim::orderBy('ano', 'desc')->orderBy('mes_id', 'desc')->limit(9)->get();
+        //$ultimos_boletins = Boletim::orderBy('ano', 'desc')->orderBy('mes_id', 'desc')->limit(9)->get();
+        $ultimos_boletins = Boletim::orderBy('id', 'desc')->limit(10)->get();
         $ultimo_boletim = $ultimos_boletins->first();
         return view('index', compact(['ultimos_boletins', 'ultimo_boletim']));
     }
@@ -50,8 +51,9 @@ class HomeController extends Controller
             $conteudo_arquivo = file_get_contents($f->getRealPath());
             $nome_arquivo = $f->getClientOriginalName();
             $tipo_arquivo = $f->getMimeType();
-            $verif = Boletim::where('mes_id', $request->input('mes'))->where('ano', $request->input('ano'))->get();
-            if(!count($verif)){
+            //Comentariado por Dany para poder adicionar mais de um boletim no mesmo mes
+            //$verif = Boletim::where('mes_id', $request->input('mes'))->where('ano', $request->input('ano'))->get();
+            if(true){//(!count($verif)){
                 $boletim = new Boletim;
                 $boletim->mes_id = $request->input('mes');
                 $boletim->ano = $request->input('ano');
@@ -140,18 +142,18 @@ class HomeController extends Controller
                         ->header('Content-Disposition', 'inline; filename=' . $info->nome_boletim)
                         ->header('Content-Type', $info->tipo_boletim);
 
-                /* Código para conferir os dados do boletim
+                //Código para conferir os dados do boletim
 
-                $dados = "";
+                /*$dados = "";
                 $dados .= "<ul>";
                     $dados .= "<li>ID: ". $id ."</li>";
-                    $dados .= "<li>TAMANHO DO BLOB: ". strlen($arquivo) ."</li>";
-                    $dados .= "<li>NOME: ". $info->nome_arquivo ."</li>";
-                    $dados .= "<li>TIPO: ". $info->tipo_arquivo ."</li>";
-                    $dados .= "<li>BLOB: ". $arquivo ."</li>";
+                    $dados .= "<li>TAMANHO DO BLOB: ". strlen($boletim) ."</li>";
+                    //$dados .= "<li>NOME: ". $info->nome_arquivo ."</li>";
+                    //$dados .= "<li>TIPO: ". $info->tipo_arquivo ."</li>";
+                    $dados .= "<li>BLOB: ". $boletim ."</li>";
                 $dados .= "</ul>";
-                return $dados;
-                */
+                return $dados;*/
+                
             }
         }
         return redirect('/');

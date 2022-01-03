@@ -14,7 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/sobre', 'SobreController@index');
-Route::get('/arquivo', 'ArquivoController@index');
+//Route::get('/arquivo', 'ArquivoController@index');
+Route::get('/arquivo', 'ArquivoController@porano');
+Route::post('/arquivo', 'ArquivoController@poranoPost');
+Route::get('/arquivo/{ano}', 'ArquivoController@porano');
 Route::get('/boletim/new', 'HomeController@create');
 Route::post('/boletim/store', 'HomeController@store');
 Route::get('/{id}', 'HomeController@verPDF');
